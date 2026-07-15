@@ -37,7 +37,7 @@ pub struct DistributorContract;
 
 #[contractimpl]
 impl DistributorContract {
-    pub fn initialize(env: Env, admin: Address, registry_contract: Address) -> Result<(), DistributorError> {
+    pub fn init_distributor(env: Env, admin: Address, registry_contract: Address) -> Result<(), DistributorError> {
         if env.storage().instance().has(&DataKey::Admin) {
             return Err(DistributorError::AlreadyInitialized);
         }

@@ -26,7 +26,7 @@ fn setup() -> TestSetup {
 
     let contract_id = env.register(RegistryContract, ());
     let client = RegistryContractClient::new(&env, &contract_id);
-    client.initialize(&admin, &distributor);
+    client.init_registry(&admin, &distributor);
 
     TestSetup {
         env,

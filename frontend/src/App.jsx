@@ -3,7 +3,6 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import CreateWorkForm from './components/CreateWorkForm'
 import WorkCard from './components/WorkCard'
-import WorkCardSkeleton from './components/WorkCardSkeleton'
 import ActivityFeed from './components/ActivityFeed'
 import Banner from './components/Banner'
 import { useWallet } from './hooks/useWallet'
@@ -106,7 +105,7 @@ export default function App() {
         {!configured && (
           <div className="mb-6">
             <Banner type="warning">
-              Contract addresses aren't configured yet. Set{' '}
+              Contract addresses aren&apos;t configured yet. Set{' '}
               <code className="font-mono">VITE_REGISTRY_CONTRACT_ID</code>,{' '}
               <code className="font-mono">VITE_DISTRIBUTOR_CONTRACT_ID</code>, and{' '}
               <code className="font-mono">VITE_TOKEN_CONTRACT_ID</code> in your{' '}

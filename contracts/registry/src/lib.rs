@@ -54,7 +54,7 @@ pub struct RegistryContract;
 impl RegistryContract {
     /// One-time setup. `distributor_contract` is the only address permitted
     /// to lock a work's splits.
-    pub fn initialize(env: Env, admin: Address, distributor_contract: Address) -> Result<(), RegistryError> {
+    pub fn init_registry(env: Env, admin: Address, distributor_contract: Address) -> Result<(), RegistryError> {
         if env.storage().instance().has(&DataKey::Admin) {
             return Err(RegistryError::AlreadyInitialized);
         }

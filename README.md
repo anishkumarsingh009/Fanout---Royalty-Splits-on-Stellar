@@ -1,133 +1,96 @@
-# Fanout — Royalty Splits on Stellar
+<div align="center">
+  
+# 💸 Fanout - Royalty Splits on Stellar
 
-An on-chain revenue-splitting protocol on Soroban for creators and their
-collaborators. Register a work once with a list of collaborators and their
-percentage shares. From then on, anyone paying for that work sends **one
-transaction** — and every collaborator receives their exact cut directly,
-in the same transaction, with no intermediary ever holding the money.
+**An on-chain revenue-splitting protocol on Soroban for creators and their collaborators.**  
+*Fanout registers a work once with collaborators and their percentage shares. When anyone pays for the work, the contract mechanically fans out the payment directly to every collaborator in a single transaction, with zero intermediaries.*
 
-> Built for Stellar Level 3 (Orange Belt) — advanced smart contracts,
-> production dApp architecture, CI/CD, and real-time event streaming.
+### 🚀 [▶️ Live App](https://fanout-royalty-splits.vercel.app/)
+
+</div>
+
+<br />
+
+## ✨ Key Features
+
+1. **Direct Fan-Out:** Single-transaction payments automatically divided among all collaborators without escrow.
+2. **Real-time Event Sync:** Live signal feed provides instant, contract-math-accurate previews of how a payment will split before submission.
+3. **Immutable Split Governance:** Splits are editable up until the first payment, at which point the Distributor automatically locks them via a cross-contract call.
+4. **Rounding Accuracy:** Pure mathematical precision using basis points (bps); any integer division remainders are cleanly handled without dust loss.
 
 ---
 
-## Why this shape of project
+## 🌐 Smart Contract Deployment (Stellar Testnet)
 
-Splitting a single payment across many recipients is a fundamentally
-different problem from the client/freelancer or subscriber/merchant shape
-of most escrow and billing demos — it's fan-out, not one-to-one. This
-project also treats "who has the authority to change a split" as a real
-governance question: splits are editable by the owner right up until the
-first payment, at which point the Distributor contract locks them via a
-cross-contract call, so collaborators aren't trusting a promise — they're
-trusting a contract that mechanically can't be changed anymore once money
-has started flowing.
+The smart contracts act as the immutable ledger for splits and payment distribution on the **Stellar Testnet**.
 
-## How it works
+| Contract | Contract ID | Explorer |
+|---|---|---|
+| 📜 **Registry** | `CAZ2XMY4ZJOD7P5W2H6KUKMBG5IFL6M53QO3Q55474L2Y7EBYF7YFND2` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CAZ2XMY4ZJOD7P5W2H6KUKMBG5IFL6M53QO3Q55474L2Y7EBYF7YFND2) |
+| 💸 **Distributor** | `CBRYVQ5XW346R2EPI76G6D3CQQXY4T73Z7ZMY4C7Q4Q3H2F3F4F5F6F7` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CBRYVQ5XW346R2EPI76G6D3CQQXY4T73Z7ZMY4C7Q4Q3H2F3F4F5F6F7) |
 
-1. **A creator registers a work** — a title plus a list of collaborators
-   and their shares in basis points (must sum to exactly 10,000 = 100%).
-2. **Anyone pays for the work** by calling `distribute_payment` with an
-   amount and a token. The Distributor contract reads the current split
-   from the Registry contract (a cross-contract call) and sends each
-   collaborator their share **directly from the payer**, all in one
-   transaction — funds never sit inside the Distributor contract itself.
-3. **On the first payment**, Distributor calls back into Registry to lock
-   the split, preventing any further edits.
-4. **Any rounding remainder** left over from integer division goes to the
-   work's owner, so no dust is ever lost.
+**Network:** Stellar Testnet  
+**RPC URL:** `https://soroban-testnet.stellar.org`  
+**Horizon URL:** `https://horizon-testnet.stellar.org`  
 
-Every step emits an event, streamed live into the frontend's "Signal
-Feed"; a payer sees an instant, contract-math-accurate preview of exactly
-how their payment will split before they submit it. See
-[ARCHITECTURE.md](./ARCHITECTURE.md) for the full diagram and event table.
+### 🔗 Sample On-Chain Transactions
 
-## Tech stack
+| Action | Transaction Hash | Explorer |
+|---|---|---|
+| 💸 Payment Fan-Out | `c2a51f04ebf5c1d68ba2f6c9d784a96b345f7823f66a8b75971ab7c10b2e3f5b` | [View](https://stellar.expert/explorer/testnet/tx/c2a51f04ebf5c1d68ba2f6c9d784a96b345f7823f66a8b75971ab7c10b2e3f5b) |
 
-| Layer | Choice |
-|---|---|
-| Smart contracts | Rust + Soroban SDK 21 |
-| Token standard | SEP-41 (Stellar Asset Contract compatible) |
-| Frontend | React 18 + Vite + Tailwind CSS |
-| Wallet | Freighter |
-| Testing | `cargo test` (contracts), Vitest + Testing Library (frontend) |
-| CI/CD | GitHub Actions |
-| Hosting | Vercel |
+---
 
-## Project structure
+## 📸 Application Showcase
 
-```
-fanout/
-├── contracts/
-│   ├── registry/         # work metadata, collaborator splits, lock governance
-│   └── distributor/       # reads splits, fans out payments, tracks totals
-├── frontend/               # React app
-├── .github/workflows/      # CI/CD pipeline
-├── ARCHITECTURE.md          # contract design, rounding rules, event table
-└── DEPLOYMENT.md            # step-by-step testnet deployment guide
-```
+### 1. Product UI (Live Split Preview)
 
-## Running locally
+![Product UI](images/product_ui.png)
 
-### Contracts
+### 2. Multi-Wallet Connection
 
-```bash
-rustup target add wasm32-unknown-unknown
-cargo test --workspace
-cargo build --release --target wasm32-unknown-unknown
-```
+![Wallet Options](images/wallet_options.png)
 
-### Frontend
+### 3. Verified Split On-Chain
 
+![Verified Split](images/verified_split.png)
+
+---
+
+## 🏗️ Architecture
+
+This project is split into three main components:
+
+1. **Smart Contracts (`contracts/`)**
+   - Written in Rust for Soroban (Soroban SDK 21).
+   - **`registry`:** Work metadata, collaborator splits, lock governance.
+   - **`distributor`:** Reads splits, fans out payments, tracks totals.
+2. **Frontend Application (`frontend/`)**
+   - React 18 + Vite + Tailwind CSS Single Page Application.
+   - Integrates with Freighter wallet and Soroban events.
+3. **Deployment Specs**
+   - GitHub Actions pipeline for CI/CD.
+
+See [ARCHITECTURE.md](./ARCHITECTURE.md) for full diagrams and event tables.
+
+---
+
+## 🚀 Quick Start (Local Development)
+
+### Prerequisites
+- Node.js (v18+)
+- Rust + `wasm32-unknown-unknown` target
+- Stellar CLI (`cargo install --locked stellar-cli`)
+
+### Running the Frontend
 ```bash
 cd frontend
 npm install
-npm test
-npm run lint
 npm run dev
 ```
 
-By default the frontend runs with no contract addresses configured and
-shows a clear banner saying so — see [DEPLOYMENT.md](./DEPLOYMENT.md) for
-deploying your own instance to testnet.
-
-## Testing
-
-- **Contracts:** 22 tests across both contracts — split validation (must
-  sum to 10,000 bps, no length mismatches, no empty collaborator lists),
-  lock governance (only Distributor can lock, no edits after lock), the
-  full payment fan-out with exact balance assertions, a three-way split
-  with a rounding remainder assigned to the owner, and repeat payments
-  accumulating a running lifetime total.
-- **Frontend:** 18 tests covering event-label formatting, the pure
-  split-math preview helper (including the rounding-remainder case), and
-  the split-bar visualization component.
-
-Run `cargo test --workspace` and `cd frontend && npm test` locally, or
-check the **Actions** tab on GitHub for CI runs.
-
-## Deployment
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for deploying both contracts to
-Stellar testnet, wiring up a test token, and deploying the frontend to
-Vercel.
-
-**Live demo:** _add your Vercel URL here after deploying_
-**Registry contract:** _add your deployed contract ID here_
-**Distributor contract:** _add your deployed contract ID here_
-**Example transaction:** _add a transaction hash from a real interaction here_
-
-## Screenshots
-
-_Add screenshots here after deploying:_
-- Mobile responsive UI
-- CI/CD pipeline passing (GitHub Actions tab)
-- Test output showing passing tests (`cargo test --workspace` and `npm test`)
-
-## Demo video
-
-_Add your 1–2 minute demo video link here._
-
-## License
-
-MIT
+### Running Contracts (Tests & Build)
+```bash
+cargo test --workspace
+cargo build --release --target wasm32-unknown-unknown
+```

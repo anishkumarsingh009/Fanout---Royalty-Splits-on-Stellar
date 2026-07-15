@@ -5,13 +5,18 @@
 **An on-chain revenue-splitting protocol on Soroban for creators and their collaborators.**  
 *Fanout registers a work once with collaborators and their percentage shares. When anyone pays for the work, the contract mechanically fans out the payment directly to every collaborator in a single transaction, with zero intermediaries.*
 
-### 🚀 [▶️ Live App](https://fanout-royalty-splits-on-stellar-ot.vercel.app/) | 🎥 [Demo Video](https://drive.google.com/file/d/11yAUPp_xOQlBW2uhC7VJKiyBOIFi4qaY/view?usp=sharing)
+[![Stellar](https://img.shields.io/badge/Stellar-Soroban-blue.svg)](https://stellar.org/soroban)
+[![Vite](https://img.shields.io/badge/Frontend-Vite_React-black.svg)](https://vitejs.dev/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black.svg?logo=vercel)](https://fanout-royalty-splits-on-stellar-ot.vercel.app/)
+[![Video Demo](https://img.shields.io/badge/Video%20Demo-Google%20Drive-red.svg?logo=google-drive)](https://drive.google.com/file/d/11yAUPp_xOQlBW2uhC7VJKiyBOIFi4qaY/view?usp=sharing)
+
+### 🔗 [▶️ Live App](https://fanout-royalty-splits-on-stellar-ot.vercel.app/) &nbsp;|&nbsp; [🎥 Video Demo](https://drive.google.com/file/d/11yAUPp_xOQlBW2uhC7VJKiyBOIFi4qaY/view?usp=sharing)
 
 </div>
 
 <br />
 
-## ✨ Key Features
+## 🌟 Key Features
 
 1. **Direct Fan-Out:** Single-transaction payments automatically divided among all collaborators without escrow.
 2. **Real-time Event Sync:** Live signal feed provides instant, contract-math-accurate previews of how a payment will split before submission.
@@ -20,77 +25,62 @@
 
 ---
 
-## 🌐 Smart Contract Deployment (Stellar Testnet)
+## 🚀 Smart Contract Deployment (Stellar Testnet)
 
-The smart contracts act as the immutable ledger for splits and payment distribution on the **Stellar Testnet**.
+The smart contracts are live and deployed to the **Stellar Testnet** via automated CI/CD (GitHub Actions). All contract interactions use the native **XLM** token.
 
 | Contract | Contract ID | Explorer |
 |---|---|---|
 | 📜 **Registry** | `CBH2UKZPUQEKTJ375GMFRVVKSUJEAG43Z2QK5UNG5ASC2WCUMFP4HL5D` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CBH2UKZPUQEKTJ375GMFRVVKSUJEAG43Z2QK5UNG5ASC2WCUMFP4HL5D) |
 | 💸 **Distributor** | `CCGEP2DV442ZVN4UMJQDLISCZEVBKVGD2Q7CVQ6JN5C6XFQ5P4HXU2PZ` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CCGEP2DV442ZVN4UMJQDLISCZEVBKVGD2Q7CVQ6JN5C6XFQ5P4HXU2PZ) |
 
-**Network:** Stellar Testnet  
-**RPC URL:** `https://soroban-testnet.stellar.org`  
-**Horizon URL:** `https://horizon-testnet.stellar.org`  
-
-### 🔗 Sample On-Chain Transactions
-
-| Action | Transaction Hash | Explorer |
-|---|---|---|
-| 💸 Payment Fan-Out | `7664bb971883850f39de438936cdeedf24c8ec2367b9d609b85a29c087e04d57` | [View](https://stellar.expert/explorer/testnet/tx/7664bb971883850f39de438936cdeedf24c8ec2367b9d609b85a29c087e04d57) |
+**Sample Transaction:** [View Contract Interaction Hash](https://stellar.expert/explorer/testnet/tx/7664bb971883850f39de438936cdeedf24c8ec2367b9d609b85a29c087e04d57)
 
 ---
 
-## 📸 Application Showcase
+## 📸 Screenshots
 
-### 1. Product UI
-![Product UI](images/product%20ui.png)
+**Product UI & Mobile Responsiveness**
+<p align="center">
+  <img src="images/product%20ui.png" width="48%" />
+  <img src="images/Mobile%20ui.png" width="48%" />
+</p>
 
-### 2. Mobile Responsive UI
-![Mobile UI](images/Mobile%20ui.png)
+**CI/CD Pipeline Running**
+<p align="center">
+  <img src="images/CI%20CD.png" width="80%" />
+</p>
 
-### 3. CI/CD Pipeline
-![CI/CD](images/CI%20CD.png)
-
-### 4. Passing Test Output
-![Test Output](images/test%20output.png)
-
----
-
-## 🏗️ Architecture
-
-This project is split into three main components:
-
-1. **Smart Contracts (`contracts/`)**
-   - Written in Rust for Soroban (Soroban SDK 21).
-   - **`registry`:** Work metadata, collaborator splits, lock governance.
-   - **`distributor`:** Reads splits, fans out payments, tracks totals.
-2. **Frontend Application (`frontend/`)**
-   - React 18 + Vite + Tailwind CSS Single Page Application.
-   - Integrates with Freighter wallet and Soroban events.
-3. **Deployment Specs**
-   - GitHub Actions pipeline for CI/CD.
-
-See [ARCHITECTURE.md](./ARCHITECTURE.md) for full diagrams and event tables.
+**Test Output (3+ Passing Tests)**
+<p align="center">
+  <img src="images/test%20output.png" width="80%" />
+</p>
 
 ---
 
-## 🚀 Quick Start (Local Development)
+## 🛠️ Tech Stack
 
-### Prerequisites
-- Node.js (v18+)
-- Rust + `wasm32-unknown-unknown` target
-- Stellar CLI (`cargo install --locked stellar-cli`)
+- **Smart Contracts:** Rust, Soroban SDK
+- **Frontend:** React 18, Vite, Tailwind CSS
+- **Wallet Integration:** Freighter / Stellar Wallets Kit
+- **CI/CD:** GitHub Actions (Automated build, test, and deploy)
 
-### Running the Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
+## 📖 Local Development
 
-### Running Contracts (Tests & Build)
-```bash
-cargo test --workspace
-cargo build --release --target wasm32-unknown-unknown
-```
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/anishkumarsingh009/Fanout---Royalty-Splits-on-Stellar.git
+   cd Fanout---Royalty-Splits-on-Stellar
+   ```
+
+2. **Run Contract Tests:**
+   ```bash
+   cargo test --workspace
+   ```
+
+3. **Start the Frontend:**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```

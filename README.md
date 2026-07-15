@@ -5,11 +5,6 @@
 **An on-chain revenue-splitting protocol on Soroban for creators and their collaborators.**  
 *Fanout registers a work once with collaborators and their percentage shares. When anyone pays for the work, the contract mechanically fans out the payment directly to every collaborator in a single transaction, with zero intermediaries.*
 
-[![Stellar](https://img.shields.io/badge/Stellar-Soroban-blue.svg)](https://stellar.org/soroban)
-[![Vite](https://img.shields.io/badge/Frontend-Vite_React-black.svg)](https://vitejs.dev/)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-black.svg?logo=vercel)](https://fanout-royalty-splits-on-stellar-ot.vercel.app/)
-[![Video Demo](https://img.shields.io/badge/Video%20Demo-Google%20Drive-red.svg?logo=google-drive)](https://drive.google.com/file/d/11yAUPp_xOQlBW2uhC7VJKiyBOIFi4qaY/view?usp=sharing)
-
 ### 🔗 [▶️ Live App](https://fanout-royalty-splits-on-stellar-ot.vercel.app/) &nbsp;|&nbsp; [🎥 Video Demo](https://drive.google.com/file/d/11yAUPp_xOQlBW2uhC7VJKiyBOIFi4qaY/view?usp=sharing)
 
 </div>

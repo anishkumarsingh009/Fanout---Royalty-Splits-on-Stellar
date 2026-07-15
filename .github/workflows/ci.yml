@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
@@ -11,7 +11,7 @@ env:
 
 jobs:
   contracts:
-    name: Smart Contracts (test + build)
+    name: Smart Contracts (test + build + deploy)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,29 +21,67 @@ jobs:
         with:
           targets: wasm32-unknown-unknown
 
-      - name: Cache cargo registry
+      - name: Cache cargo registry and binaries
         uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
+            ~/.cargo/bin
             target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-deploy-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cargo-
+            ${{ runner.os }}-cargo-deploy-
 
       - name: Run contract test suite
-        run: cargo test --workspace --verbose
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cargo test --workspace --verbose | tail -60
 
-      - name: Build contracts to WASM (release)
-        run: cargo build --workspace --release --target wasm32-unknown-unknown
+      - name: Install cargo-binstall
+        run: curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
 
-      - name: Upload WASM artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: contract-wasm
-          path: target/wasm32-unknown-unknown/release/*.wasm
-          if-no-files-found: error
+      - name: Install Stellar CLI
+        run: cargo binstall --no-confirm stellar-cli
+
+      - name: Build contracts
+        run: |
+          cargo build --target wasm32-unknown-unknown --release
+          stellar contract optimize --wasm target/wasm32-unknown-unknown/release/registry.wasm
+          stellar contract optimize --wasm target/wasm32-unknown-unknown/release/distributor.wasm
+
+      - name: Deploy to Testnet
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          echo "Generating identities..."
+          stellar keys generate deployer --network testnet
+          stellar keys fund deployer --network testnet
+
+          echo "Deploying Registry Contract..."
+          REGISTRY_ID=$(stellar contract deploy \
+            --wasm target/wasm32-unknown-unknown/release/registry.optimized.wasm \
+            --source deployer \
+            --network testnet 2>deploy_err.log) || { cat deploy_err.log; exit 1; }
+          echo "Registry Contract deployed at: $REGISTRY_ID"
+
+          echo "Deploying Distributor Contract..."
+          DISTRIBUTOR_ID=$(stellar contract deploy \
+            --wasm target/wasm32-unknown-unknown/release/distributor.optimized.wasm \
+            --source deployer \
+            --network testnet 2>deploy_err.log) || { cat deploy_err.log; exit 1; }
+          echo "Distributor Contract deployed at: $DISTRIBUTOR_ID"
+          
+          echo "Fetching Test Token (Native XLM asset) ID..."
+          TOKEN_ID=$(stellar contract id asset --asset native --network testnet)
+          echo "Native Token ID is: $TOKEN_ID"
+
+          echo "=================================================="
+          echo " Deployment complete"
+          echo "=================================================="
+          echo " VITE_REGISTRY_CONTRACT_ID: $REGISTRY_ID"
+          echo " VITE_DISTRIBUTOR_CONTRACT_ID: $DISTRIBUTOR_ID"
+          echo " VITE_TOKEN_CONTRACT_ID: $TOKEN_ID"
+          echo "=================================================="
 
   frontend:
     name: Frontend (lint + test + build)
@@ -62,7 +100,7 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Lint
         run: npm run lint

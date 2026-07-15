@@ -75,6 +75,12 @@ jobs:
           TOKEN_ID=$(stellar contract id asset --asset native --network testnet)
           echo "Native Token ID is: $TOKEN_ID"
 
+          echo "Initializing Registry Contract..."
+          stellar contract invoke --id $REGISTRY_ID --source deployer --network testnet -- init_registry --admin $(stellar keys address deployer) --distributor_contract $DISTRIBUTOR_ID
+          
+          echo "Initializing Distributor Contract..."
+          stellar contract invoke --id $DISTRIBUTOR_ID --source deployer --network testnet -- init_distributor --admin $(stellar keys address deployer) --registry_contract $REGISTRY_ID
+
           echo "=================================================="
           echo " Deployment complete"
           echo "=================================================="

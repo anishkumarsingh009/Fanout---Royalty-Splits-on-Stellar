@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #151718;
+  background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(63, 191, 173, 0.08), transparent);
+}
+
+::selection {
+  background-color: #3fbfad;
+  color: #151718;
+}
+
+*:focus-visible {
+  outline: 2px solid #3fbfad;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes level-fill {
+  from {
+    width: 0%;
+  }
+}
+
+.level-fill {
+  animation: level-fill 0.6s ease-out forwards;
+}

@@ -1,45 +1,61 @@
+import {
+  isConnected,
+  isAllowed,
+  requestAccess,
+  signTransaction as freighterSignTransaction,
+  getNetworkDetails as freighterGetNetworkDetails,
+  getAddress as freighterGetAddress
+} from '@stellar/freighter-api'
+
 const NETWORK_PASSPHRASES = {
   TESTNET: 'Test SDF Network ; September 2015',
   PUBLIC: 'Public Global Stellar Network ; September 2015',
 }
 
-export function isFreighterInstalled() {
-  return typeof window !== 'undefined' && !!window.freighterApi
+export async function isFreighterInstalled() {
+  return await isConnected()
 }
 
 export async function connectWallet() {
-  if (!isFreighterInstalled()) {
-    throw new Error(
-      'Freighter wallet extension not found. Install it from freighter.app to continue.'
-    )
+  const connected = await isFreighterInstalled()
+  if (!connected) {
+    throw new Error('Freighter wallet extension not found. Install it from freighter.app to continue.')
   }
-  const access = await window.freighterApi.requestAccess()
-  if (access.error) {
-    throw new Error(access.error)
+  
+  let allowed = await isAllowed()
+  if (!allowed) {
+    await requestAccess()
+    allowed = await isAllowed()
+    if (!allowed) {
+      throw new Error('User declined access')
+    }
   }
-  const addressResult = await window.freighterApi.getAddress()
+
+  const addressResult = await freighterGetAddress()
   if (addressResult.error) {
     throw new Error(addressResult.error)
   }
-  return addressResult.address
+  return addressResult.address || addressResult
 }
 
 export async function getNetworkDetails() {
-  if (!isFreighterInstalled()) return null
-  return window.freighterApi.getNetworkDetails()
+  const connected = await isFreighterInstalled()
+  if (!connected) return null
+  return await freighterGetNetworkDetails()
 }
 
 export async function signTransaction(xdr, networkPassphrase) {
-  if (!isFreighterInstalled()) {
+  const connected = await isFreighterInstalled()
+  if (!connected) {
     throw new Error('Freighter wallet extension not found.')
   }
-  const result = await window.freighterApi.signTransaction(xdr, {
+  const result = await freighterSignTransaction(xdr, {
     networkPassphrase,
   })
   if (result.error) {
     throw new Error(result.error)
   }
-  return result.signedTxXdr
+  return result
 }
 
 export { NETWORK_PASSPHRASES }

@@ -25,6 +25,9 @@ export default function Header({ wallet }) {
               className="font-mono text-xs sm:text-sm px-3 py-2 rounded border border-teal/40 text-teal hover:bg-teal/10 transition-colors"
               title="Click to disconnect"
             >
+              {wallet.balance && (
+                <span className="mr-3 opacity-80">{Number(wallet.balance).toFixed(2)} XLM</span>
+              )}
               {short(wallet.address)}
             </button>
           ) : (

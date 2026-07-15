@@ -72,6 +72,9 @@ export default function App() {
       setTxByWork((prev) => ({ ...prev, [workId]: hash }))
       setKnownWorkIds((prev) => [...prev, Number(workId)])
       await refreshWork(Number(workId))
+      if (wallet.fetchBalance) {
+        wallet.fetchBalance(wallet.address)
+      }
     } catch (err) {
       setErrorMsg(err.message || 'Failed to register work.')
     }
@@ -86,6 +89,9 @@ export default function App() {
       const { hash } = await distributePayment({ payer: wallet.address, workId, token, amount })
       setTxByWork((prev) => ({ ...prev, [workId]: hash }))
       await refreshWork(workId)
+      if (wallet.fetchBalance) {
+        wallet.fetchBalance(wallet.address)
+      }
     } catch (err) {
       setErrorMsg(err.message || 'Payment failed.')
     }

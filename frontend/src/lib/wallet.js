@@ -13,7 +13,8 @@ const NETWORK_PASSPHRASES = {
 }
 
 export async function isFreighterInstalled() {
-  return await isConnected()
+  const res = await isConnected()
+  return res && res.isConnected
 }
 
 export async function connectWallet() {
@@ -22,11 +23,11 @@ export async function connectWallet() {
     throw new Error('Freighter wallet extension not found. Install it from freighter.app to continue.')
   }
   
-  let allowed = await isAllowed()
-  if (!allowed) {
+  let allowedRes = await isAllowed()
+  if (!allowedRes || !allowedRes.isAllowed) {
     await requestAccess()
-    allowed = await isAllowed()
-    if (!allowed) {
+    allowedRes = await isAllowed()
+    if (!allowedRes || !allowedRes.isAllowed) {
       throw new Error('User declined access')
     }
   }

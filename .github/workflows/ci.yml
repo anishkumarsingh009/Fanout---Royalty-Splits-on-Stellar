@@ -2,9 +2,9 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 env:
   CARGO_TERM_COLOR: always
@@ -51,7 +51,7 @@ jobs:
           stellar contract optimize --wasm target/wasm32-unknown-unknown/release/distributor.wasm
 
       - name: Deploy to Testnet
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         run: |
           echo "Generating identities..."
           stellar keys generate deployer --network testnet

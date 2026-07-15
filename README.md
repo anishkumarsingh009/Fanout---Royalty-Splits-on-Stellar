@@ -5,7 +5,7 @@
 **An on-chain revenue-splitting protocol on Soroban for creators and their collaborators.**  
 *Fanout registers a work once with collaborators and their percentage shares. When anyone pays for the work, the contract mechanically fans out the payment directly to every collaborator in a single transaction, with zero intermediaries.*
 
-### 🚀 [▶️ Live App](https://fanout-royalty-splits.vercel.app/)
+### 🚀 [▶️ Live App](https://fanout-royalty-splits-on-stellar-ot.vercel.app/) | 🎥 [Demo Video](https://drive.google.com/file/d/11yAUPp_xOQlBW2uhC7VJKiyBOIFi4qaY/view?usp=sharing)
 
 </div>
 
@@ -26,8 +26,8 @@ The smart contracts act as the immutable ledger for splits and payment distribut
 
 | Contract | Contract ID | Explorer |
 |---|---|---|
-| 📜 **Registry** | `CAZ2XMY4ZJOD7P5W2H6KUKMBG5IFL6M53QO3Q55474L2Y7EBYF7YFND2` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CAZ2XMY4ZJOD7P5W2H6KUKMBG5IFL6M53QO3Q55474L2Y7EBYF7YFND2) |
-| 💸 **Distributor** | `CBRYVQ5XW346R2EPI76G6D3CQQXY4T73Z7ZMY4C7Q4Q3H2F3F4F5F6F7` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CBRYVQ5XW346R2EPI76G6D3CQQXY4T73Z7ZMY4C7Q4Q3H2F3F4F5F6F7) |
+| 📜 **Registry** | `CBH2UKZPUQEKTJ375GMFRVVKSUJEAG43Z2QK5UNG5ASC2WCUMFP4HL5D` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CBH2UKZPUQEKTJ375GMFRVVKSUJEAG43Z2QK5UNG5ASC2WCUMFP4HL5D) |
+| 💸 **Distributor** | `CCGEP2DV442ZVN4UMJQDLISCZEVBKVGD2Q7CVQ6JN5C6XFQ5P4HXU2PZ` | [View on Stellar Expert](https://stellar.expert/explorer/testnet/contract/CCGEP2DV442ZVN4UMJQDLISCZEVBKVGD2Q7CVQ6JN5C6XFQ5P4HXU2PZ) |
 
 **Network:** Stellar Testnet  
 **RPC URL:** `https://soroban-testnet.stellar.org`  
@@ -37,23 +37,23 @@ The smart contracts act as the immutable ledger for splits and payment distribut
 
 | Action | Transaction Hash | Explorer |
 |---|---|---|
-| 💸 Payment Fan-Out | `c2a51f04ebf5c1d68ba2f6c9d784a96b345f7823f66a8b75971ab7c10b2e3f5b` | [View](https://stellar.expert/explorer/testnet/tx/c2a51f04ebf5c1d68ba2f6c9d784a96b345f7823f66a8b75971ab7c10b2e3f5b) |
+| 💸 Payment Fan-Out | `7664bb971883850f39de438936cdeedf24c8ec2367b9d609b85a29c087e04d57` | [View](https://stellar.expert/explorer/testnet/tx/7664bb971883850f39de438936cdeedf24c8ec2367b9d609b85a29c087e04d57) |
 
 ---
 
 ## 📸 Application Showcase
 
-### 1. Product UI (Live Split Preview)
+### 1. Product UI
+![Product UI](images/product%20ui.png)
 
-![Product UI](images/product_ui.png)
+### 2. Mobile Responsive UI
+![Mobile UI](images/Mobile%20ui.png)
 
-### 2. Multi-Wallet Connection
+### 3. CI/CD Pipeline
+![CI/CD](images/CI%20CD.png)
 
-![Wallet Options](images/wallet_options.png)
-
-### 3. Verified Split On-Chain
-
-![Verified Split](images/verified_split.png)
+### 4. Passing Test Output
+![Test Output](images/test%20output.png)
 
 ---
 

@@ -3,7 +3,10 @@ import { connectWallet, isFreighterInstalled } from '../lib/wallet'
 import { getServer } from '../lib/sorobanClient'
 
 export function useWallet() {
-  const [address, setAddress] = useState(() => localStorage.getItem('wallet_address') || null)
+  const [address, setAddress] = useState(() => {
+    const saved = localStorage.getItem('wallet_address')
+    return saved === '[object Object]' ? null : saved
+  })
   const [balance, setBalance] = useState(null)
   const [connecting, setConnecting] = useState(false)
   const [error, setError] = useState(null)

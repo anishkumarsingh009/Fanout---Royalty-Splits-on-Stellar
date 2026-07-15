@@ -32,10 +32,21 @@ export async function connectWallet() {
   }
 
   const addressResult = await freighterGetAddress()
-  if (addressResult.error) {
+  if (addressResult && addressResult.error) {
     throw new Error(addressResult.error)
   }
-  return addressResult.address || addressResult
+  
+  let addr = ''
+  if (typeof addressResult === 'string') {
+    addr = addressResult
+  } else if (addressResult && typeof addressResult === 'object') {
+    addr = addressResult.address || addressResult.publicKey || ''
+  }
+  
+  if (!addr) {
+    throw new Error('Failed to retrieve wallet address from Freighter.')
+  }
+  return addr
 }
 
 export async function getNetworkDetails() {
@@ -52,10 +63,23 @@ export async function signTransaction(xdr, networkPassphrase) {
   const result = await freighterSignTransaction(xdr, {
     networkPassphrase,
   })
-  if (result.error) {
+  
+  if (result && result.error) {
     throw new Error(result.error)
   }
-  return result
+  
+  let signedXdr = ''
+  if (typeof result === 'string') {
+    signedXdr = result
+  } else if (result && typeof result === 'object') {
+    signedXdr = result.signedTxXdr || result.signedTransaction || ''
+  }
+  
+  if (!signedXdr) {
+    throw new Error('Failed to sign transaction with Freighter.')
+  }
+  
+  return signedXdr
 }
 
 export { NETWORK_PASSPHRASES }

@@ -1,6 +1,12 @@
 import { useState, useCallback, useEffect } from 'react'
 import { connectWallet, isFreighterInstalled } from '../lib/wallet'
-import { getServer } from '../lib/sorobanClient'
+import { Horizon } from '@stellar/stellar-sdk'
+import { NETWORK } from '../lib/config'
+
+const horizonUrl = NETWORK === 'PUBLIC' 
+  ? 'https://horizon.stellar.org' 
+  : 'https://horizon-testnet.stellar.org'
+const horizonServer = new Horizon.Server(horizonUrl)
 
 export function useWallet() {
   const [address, setAddress] = useState(() => {
@@ -18,14 +24,14 @@ export function useWallet() {
 
   const fetchBalance = useCallback(async (addr) => {
     try {
-      const account = await getServer().getAccount(addr)
+      const account = await horizonServer.loadAccount(addr)
       const nativeBalance = account.balances.find((b) => b.asset_type === 'native')
       if (nativeBalance) {
         setBalance(nativeBalance.balance)
       }
     } catch (err) {
       console.error('Failed to fetch balance', err)
-      setBalance('0.0000000') // Account might not exist on testnet yet
+      setBalance('0.0000000') // Account might not exist on network yet
     }
   }, [])
 
